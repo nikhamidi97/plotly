@@ -25,7 +25,7 @@ class Plot {
         _container = container,
         _proxy = new JsObject.fromBrowserObject(container) {
     if (_Plotly == null) {
-      throw new StateError('plotly.min.js no loaded');
+      throw new StateError('plotly.min.js not loaded');
     }
     var _data = new JsObject.jsify(data);
     var _layout = new JsObject.jsify(layout);
@@ -141,7 +141,8 @@ class Plot {
   /// Removes traces from a plot by specifying the indices of the traces to be
   /// removed.
   void deleteTraces(List<int> indices) {
-    _Plotly.callMethod('deleteTraces', [_container, new JsObject.jsify(indices)]);
+    _Plotly.callMethod(
+        'deleteTraces', [_container, new JsObject.jsify(indices)]);
   }
 
   /// Reposition a trace in the plot. This will change the ordering of the
@@ -152,7 +153,11 @@ class Plot {
   /// Reorder traces in the plot. This will change the ordering of the
   /// layering and the legend.
   void moveTraces(List<int> currentIndices, List<int> newIndices) {
-    _Plotly.callMethod('moveTraces', [_container, new JsObject.jsify(currentIndices), new JsObject.jsify(newIndices)]);
+    _Plotly.callMethod('moveTraces', [
+      _container,
+      new JsObject.jsify(currentIndices),
+      new JsObject.jsify(newIndices)
+    ]);
   }
 
   /// Animates to frames.
@@ -172,7 +177,9 @@ class Plot {
   ///     each following the same rules as a single `object`.
   void animate(frames, [Map opts]) {
     final args = <dynamic>[_container];
-    args.add((frames is Iterable || frames is Map) ? new JsObject.jsify(frames) : frames);
+    args.add((frames is Iterable || frames is Map)
+        ? new JsObject.jsify(frames)
+        : frames);
     if (opts != null) args.add(new JsObject.jsify(opts));
     _Plotly.callMethod('animate', args);
   }
@@ -197,7 +204,8 @@ class Plot {
 
   /// Deletes frames from plot by [indices].
   void deleteFrames(List<int> indices) {
-    _Plotly.callMethod('deleteFrames', [_container, new JsObject.jsify(indices)]);
+    _Plotly.callMethod(
+        'deleteFrames', [_container, new JsObject.jsify(indices)]);
   }
 
   /// Use redraw to trigger a complete recalculation and redraw of the graph.
@@ -210,6 +218,14 @@ class Plot {
 
   void purge() {
     _Plotly.callMethod('purge', [_container]);
+  }
+
+  void update(Map dataUpdate, Map layoutUpdate) {
+    _Plotly.callMethod('update', [
+      _container,
+      new JsObject.jsify(dataUpdate),
+      new JsObject.jsify(layoutUpdate)
+    ]);
   }
 
   static getSchema() => context['Plotly']['PlotSchema'].callMethod("get");

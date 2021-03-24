@@ -1,4 +1,4 @@
-import 'package:plotly/plotly.dart';
+import '../lib/plotly.dart';
 
 main() {
   var trace1 = {
